@@ -61,6 +61,11 @@ export default function Login(props) {
           Login
         </Button>
       </Form >
+      <p>Not an existing User?</p>
+      <Button variant="dark" onClick={() => { console.log(props.history) }}>
+        Signup
+      </Button>
+
       {message && <div className="info info-danger">{message}</div>}
     </div>
   )
