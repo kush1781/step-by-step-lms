@@ -9,7 +9,16 @@ function LoginNavbar(props) {
   }
   return (
     <Navbar bg="dark" variant="dark">
-      <Navbar.Brand href="/">STEP BY STEP</Navbar.Brand>
+      <Navbar.Brand href="/">
+        <img
+          src={require('../public/logo.png')}
+          width="50"
+          height="50"
+          className="d-inline-block align-top"
+          alt="React Bootstrap logo"
+        />
+        STEP BY STEP
+      </Navbar.Brand>
       <Nav className="mr-auto">
       </Nav>
     </Navbar>
