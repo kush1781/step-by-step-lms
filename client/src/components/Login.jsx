@@ -1,29 +1,29 @@
-import React, { useState } from 'react'
-import api from '../api'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-import Dropdown from 'react-bootstrap/Dropdown'
+import React, { useState } from 'react';
+import api from '../api';
+import { useDispatch } from 'react-redux';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Dropdown from 'react-bootstrap/Dropdown';
+import { setUser } from '../store/actions/user';
 
 export default function Login(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('Select Type');
   const [saveLogin, setSaveLogin] = useState(false);
+  const dispatch = useDispatch();
   function handleSubmit(e) {
     e.preventDefault()
     console.log(username, password, userType, saveLogin)
-    api.login(username, password, userType)
-      .then(result => {
-        //save to redux
-        console.log('SUCCESS!')
-        if (userType == 'Student')
-          props.history.push('/student')
-        else if (userType == 'Teacher')
-          props.history.push('/teacher')
-        else
-          props.history.push('/parent')
-      })
-      .catch(err => setMessage(err.toString()))
+    // api.login(username, password, userType)
+    //   .then(result => {
+    //     //save to redux
+    //     console.log('SUCCESS!')
+    //       props.history.push(`/${userType}`)
+    //     })
+    //     .catch(err => setMessage(err.toString()))
+    dispatch(setUser({ name: username, userType }));
+    props.history.push(`/${userType}/home`)
   }
 
   const [message, setMessage] = useState(null)
@@ -39,9 +39,9 @@ export default function Login(props) {
               {userType}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item onSelect={() => { setUserType('Student') }} >Student</Dropdown.Item>
-              <Dropdown.Item onSelect={() => { setUserType('Teacher') }} >Teacher</Dropdown.Item>
-              <Dropdown.Item onSelect={() => { setUserType('Parent') }} >Parent</Dropdown.Item>
+              <Dropdown.Item onSelect={() => { setUserType('student') }} >Student</Dropdown.Item>
+              <Dropdown.Item onSelect={() => { setUserType('teacher') }} >Teacher</Dropdown.Item>
+              <Dropdown.Item onSelect={() => { setUserType('parent') }} >Parent</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </Form.Group>

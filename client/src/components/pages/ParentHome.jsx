@@ -1,9 +1,10 @@
-import React from 'react'
-import MainNavbar from '../MainNavbar'
-import NotifactionBox from '../NotificationBox'
-import Queue from '../Queue'
+import React, { useState } from 'react';
+import MainNavbar from '../MainNavbar';
+import Queue from '../Queue';
+import NotifactionBox from '../NotificationBox';
 
-export default function StudentHome(props) {
+export default function ParentHome(props) {
+  const [courseModalVisible, setCourseModalVisible] = useState(false)
   return (
     <div>
       <MainNavbar history={props.history} />
@@ -15,8 +16,7 @@ export default function StudentHome(props) {
             <NotifactionBox history={props.history} heading={'Events'} />
             <NotifactionBox history={props.history} heading={'Holidays'} />
           </div>
-          <Queue history={props.history} title={'Upcoming Tests'} />
-          <Queue history={props.history} title={'My Courses'} />
+          <Queue history={props.history} title={"My Child's Courses"} />
         </div>
       </div>
     </div>

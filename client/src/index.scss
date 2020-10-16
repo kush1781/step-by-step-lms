@@ -47,6 +47,18 @@ body {
   padding: 10px;
 }
 
+.clickable {
+  cursor: pointer
+}
+
+.img {
+  text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20%;
+}
+
 .comment-box {
   margin-right: 5%;
   border-style: groove;
@@ -56,9 +68,28 @@ body {
   padding-left: 2%;
   margin-bottom: 1%; 
 }
+
+.notification-box {
+  width: 30%;
+  height: 200px;
+  border-style: groove;
+  border-radius: 15px;
+  background-color: whitesmoke;
+  text-align: center;
+}
+
+.notification-box-line {
+  border-style: solid;
+  border-color: darkgray;
+  border-width: 0.5px;
+  margin-bottom: 2%;
+}
+
 .Queue-box {
+  align-content: space-between;
   margin-right: 5%;
   margin-top: 5%;
+  padding-left: 0;
   border-style: groove;
   border-radius: 15px;
   background-color: whitesmoke;

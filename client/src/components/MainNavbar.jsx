@@ -1,16 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import api from '../api'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
+import { useSelector } from 'react-redux'
 
 function LoginNavbar(props) {
-  function handleLoginClick(e) {
-    api.login()
-  }
-  const id = 1;
+  const [user] = useState(useSelector(state => state.user))
   return (
     <Navbar bg="dark" variant="dark">
-      <Navbar.Brand href="/">
+      <Navbar.Brand className='clickable' onClick={() => props.history.push(`/${user.userType}/home`)}>
         <img
           src={require('../public/logo.png')}
           width="50"
@@ -20,10 +18,6 @@ function LoginNavbar(props) {
         />
         STEP BY STEP
       </Navbar.Brand>
-      <Nav className="mr-auto">
-        <Nav.Link href="/student/home">Home</Nav.Link>
-        <Nav.Link href={`/student/course/${id}`}>My Courses</Nav.Link>
-      </Nav>
     </Navbar>
   )
 }
