@@ -16,6 +16,10 @@ const AnnouncementSchema = new Schema({
     required: true,
     ref: "Teacher"
   },
+  teacherName: {
+    type: String,
+    required: true
+  },
   link: String
 });
 

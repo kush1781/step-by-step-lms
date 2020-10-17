@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
-// Load User model
+// Load Post model
 const Post = require("../models/Post");
 // Load middleware
 const checkAuth = require("../middlewares/authorization/checkAuth");
@@ -19,9 +19,14 @@ router.post("/", (req, res) => {
 // @desc Get list of all posts
 // @access Private
 router.get("/", async (req, res) => {
-    const users = await User.find();
-    if(users) {
-        res.json(users);
+    try {
+        const posts = await Post.find();
+        if(posts) {
+            res.json(post);
+        }
+    }
+    catch(e) {
+        res.status(400).json({ errors: "Server Error" });
     }
 });
 
