@@ -19,6 +19,14 @@ const StudentSchema = new Schema({
     type: [ Schema.Types.ObjectId ],
     ref: "Course"
   },
+  standard: {
+    type: String,
+    required: true
+  },
+  section: {
+    type: String,
+    required: true
+  },
   posts: {
     type: [ Schema.Types.ObjectId ],
     ref: "Post"
