@@ -7,7 +7,9 @@ const keys = require("../../config/keys");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 // Load User model
-const User = require("../../models/User");
+const User = require("../../models/users/Student");
+// Load middleware
+const checkAuth = require("../../middlewares/authorization/checkAuth");
 
 // @route POST api/users/register
 // @desc Register user
@@ -27,8 +29,7 @@ router.post("/register", (req, res) => {
             const newUser = new User({
                 name: req.body.name,
                 email: req.body.email,
-                password: req.body.password,
-                userType: req.body.userType
+                password: req.body.password
             });
             // Hash password before saving in database
             bcrypt.genSalt(10, (err, salt) => {
@@ -112,6 +113,16 @@ router.post("/login", (req, res) => {
             }
         });
     });
+});
+
+// @route GET api/users/teacher
+// @desc Get list of all teachers
+// @access Private
+router.get("/", checkAuth, async (req, res) => {
+    const users = await User.find();
+    if(users) {
+        res.json(users);
+    }
 });
 
 module.exports = router;

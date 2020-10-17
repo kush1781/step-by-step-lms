@@ -33,10 +33,7 @@ module.exports = function validateRegisterInput(data) {
   if (!Validator.equals(data.password, data.password2)) {
     errors.password2 = "Passwords must match";
   }
-  if(!(Validator.equals(data.role, "student") || Validator.equals(data.role, "parent") || Validator.equals(data.role, "teacher"))) {
-    errors.role = "Role can only be as student, teacher or parent";
-  }
-
+  
   return {
     errors,
     isValid: isEmpty(errors)
