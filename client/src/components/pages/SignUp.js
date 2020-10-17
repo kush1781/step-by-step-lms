@@ -14,8 +14,7 @@ export default function SignUp(props) {
   const [standard, setStandard] = useState('Select Standard');
   const [section, setSection] = useState('Select Section');
   const [acceptTerms, setAcceptTerms] = useState(false);
-  function handleSubmit(e) {
-    e.preventDefault();
+  function handleSubmit() {
     const user = {
       name, email, password, password2: confirmPassword
     };
@@ -31,7 +30,7 @@ export default function SignUp(props) {
         console.log(result)
         props.history.push(`/${userType.toLowerCase()}/home`)
       })
-      .catch(err => setMessage(err.toString()))
+      .catch(err => { console.log(err); setMessage(err.toString()) })
   }
 
   const [message, setMessage] = useState(null)
@@ -72,7 +71,7 @@ export default function SignUp(props) {
           </Form.Group>
           <Form.Group>
             <Form.Label>Confirm Password</Form.Label>
-            <Form.Control onChange={(e) => { setConfirmPassword(e.targer.value) }} type="password" placeholder="Password" />
+            <Form.Control onChange={(e) => { setConfirmPassword(e.target.value) }} type="password" placeholder="Password" />
           </Form.Group>
           {
             userType == 'Student' ?
@@ -113,10 +112,10 @@ export default function SignUp(props) {
           <Form.Group controlId="formBasicCheckbox" style={{ marginBottom: '1%' }}>
             <Form.Check type="checkbox" label="I agree to all terms and conditions" onChange={(e) => { setAcceptTerms(!acceptTerms) }} />
           </Form.Group>
-          <Button variant="dark" type="submit">
-            SignUp
-          </Button>
         </Form >
+        <Button onClick={handleSubmit} variant="dark" type="submit">
+          SignUp
+        </Button>
         {message && <div className="info info-danger">{message}</div>}
       </div>
     </div>
