@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 // const passport = require("passport");
 const teachersRoute = require("./routes/users/teachers");
 const studentsRoute = require("./routes/users/students");
@@ -18,6 +19,9 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+
+app.use(cors())
+
 // DB Config
 const db = require("./config/keys").mongoURI;
 // Connect to MongoDB
