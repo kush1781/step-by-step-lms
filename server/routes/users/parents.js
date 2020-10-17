@@ -27,13 +27,7 @@ router.post("/register", (req, res) => {
             const newUser = new User({
                 name: req.body.name,
                 email: req.body.email,
-<<<<<<< HEAD:server/routes/api/users.js
-                password: req.body.password,
-                userType: req.body.userType,
-                courses: []
-=======
                 password: req.body.password
->>>>>>> 3d0c8b688aa9233526215dd6653fac22f0930a0c:server/routes/users/parents.js
             });
             // Hash password before saving in database
             bcrypt.genSalt(10, (err, salt) => {

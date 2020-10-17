@@ -60,7 +60,7 @@ export default function Login(props) {
         <Button variant="dark" type="submit">
           Login
         </Button>
-      </Form >
+      </Form>
       <p>Not an existing User?</p>
       <Button variant="dark" onClick={() => { props.history.push('/signup') }}>
         Signup
