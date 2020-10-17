@@ -6,6 +6,7 @@ import LoginHome from './pages/LoginHome';
 import StudentHome from './pages/StudentHome';
 import PrivateRouter from './PrivateRouter';
 import userReducer from '../store/reducers/user';
+import coursesReducer from '../store/reducers/courses';
 import Course from './pages/CourseStudent';
 import SignUp from './pages/SignUp';
 import TeacherHome from './pages/TeacherHome';
@@ -15,7 +16,8 @@ import TestHome from './test/TestHome'
 import SetQuestions from './pages/SetQuestions';
 
 const rootReducer = combineReducers({
-  user: userReducer
+  user: userReducer,
+  courses: coursesReducer
 })
 const store = createStore(rootReducer)
 

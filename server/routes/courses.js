@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const keys = require("../config/keys");
 // Load input validation
 const User = require("../models/users/Teacher");
+const Student = require("../models/users/Student");
 const Course = require("../models/Course");
 
 
@@ -32,6 +32,7 @@ router.post("/addcourse", async (req, res) => {
 });
 
 router.post('/teacher', async (req, res) => {
+  console.log(req.body);
   const user = await User.findById(req.body._id);
   // console.log(user);
   const promises = user.courses.map(async (course) => {
@@ -39,6 +40,16 @@ router.post('/teacher', async (req, res) => {
     return myCourse;
   })
   const courses = await Promise.all(promises);
+  console.log(courses);
+  res.send(courses);
+})
+
+router.post('/student', async (req, res) => {
+
+  const user = await Student.findById(req.body._id);
+  // console.log(user);
+  const courses = await Course.find({ standard: user.standard, section: user.section });
+  console.log(courses);
   res.send(courses);
 })
 

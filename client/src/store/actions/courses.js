@@ -1,4 +1,4 @@
-export const setCourses = (courses) => ({
+export const setMyCourses = (courses) => ({
   type: "SET_COURSES",
   courses
 })

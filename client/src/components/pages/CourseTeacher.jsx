@@ -9,47 +9,49 @@ import LoadingPage from './LoadingPage';
 import AddMaterial from '../AddMaterial';
 import Modal from 'react-bootstrap/Modal';
 
+// {
+//   _id: '1',
+//   name: 'Physics',
+//   standard: '10th',
+//   section: 'E',
+//   material: [{
+//     _id: '1',
+//     title: 'Week 1',
+//     body: 'Blah blah Blah blah Blah blah Blah blah Blah blah',
+//     link: 'https://www.google.com/'
+//   }, {
+//     _id: '2',
+//     title: 'Week 2',
+//     body: 'Blah blah Blah blah Blah blah Blah blah Blah blah',
+//     link: 'https://www.google.com/'
+//   }, {
+//     _id: '3',
+//     title: 'Week 3',
+//     body: 'Blah blah Blah blah Blah blah Blah blah Blah blah',
+//     link: 'https://www.google.com/'
+//   }],
+//   tests: [{
+//     _id: '1',
+//     title: 'Minor 1',
+//     body: 'Date: 17th October Time: 5:30PM Duration: 20 minutes'
+//   }, {
+//     _id: '2',
+//     title: 'Minor 2',
+//     body: 'Date: 17th October Time: 5:30PM Duration: 20 minutes'
+//   }, {
+//     _id: '3',
+//     title: 'Mid Sem',
+//     body: 'Date: 27th October Time: 3PM Duration: 3 hours'
+//   }],
+//   posts: []
+// }
+
 export default function Course(props) {
-  const [user, setUser] = useState(useSelector(state => state.user));
+  const [user] = useState(useSelector(state => state.user));
   const [newPostBody, setPost] = useState('');
   const [link, setLink] = useState('');
-  const [course, setCourse] = useState({
-    _id: '1',
-    name: 'Physics',
-    standard: '10th',
-    section: 'E',
-    material: [{
-      _id: '1',
-      title: 'Week 1',
-      body: 'Blah blah Blah blah Blah blah Blah blah Blah blah',
-      link: 'https://www.google.com/'
-    }, {
-      _id: '2',
-      title: 'Week 2',
-      body: 'Blah blah Blah blah Blah blah Blah blah Blah blah',
-      link: 'https://www.google.com/'
-    }, {
-      _id: '3',
-      title: 'Week 3',
-      body: 'Blah blah Blah blah Blah blah Blah blah Blah blah',
-      link: 'https://www.google.com/'
-    }],
-    tests: [{
-      _id: '1',
-      title: 'Minor 1',
-      body: 'Date: 17th October Time: 5:30PM Duration: 20 minutes'
-    }, {
-      _id: '2',
-      title: 'Minor 2',
-      body: 'Date: 17th October Time: 5:30PM Duration: 20 minutes'
-    }, {
-      _id: '3',
-      title: 'Mid Sem',
-      body: 'Date: 27th October Time: 3PM Duration: 3 hours'
-    }],
-    posts: []
-  })
   const [materialModalVisible, setMaterialModalVisible] = useState(false);
+  const [course, setCourse] = useState(useSelector(state => state.courses.filter((c) => { console.log(c); return c._id == props.match.params.id })[0]));
 
   const handleAddMaterial = (title, body, link) => {
     const material = course.material;

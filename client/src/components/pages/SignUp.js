@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
-import api from '../../api'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-import Dropdown from 'react-bootstrap/Dropdown'
-import LoginNavbar from '../LoginNavbar'
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Dropdown from 'react-bootstrap/Dropdown';
+import LoginNavbar from '../LoginNavbar';
+import register from '../../apiCalls/register';
+import { setUser } from '../../store/actions/user';
 
 export default function SignUp(props) {
   const [name, setName] = useState('');
@@ -14,6 +16,7 @@ export default function SignUp(props) {
   const [standard, setStandard] = useState('Select Standard');
   const [section, setSection] = useState('Select Section');
   const [acceptTerms, setAcceptTerms] = useState(false);
+  const dispatch = useDispatch();
   function handleSubmit() {
     const user = {
       name, email, password, password2: confirmPassword
@@ -24,13 +27,14 @@ export default function SignUp(props) {
     if (section != 'Select Section') {
       user.section = section
     }
-    api.signup(user, userType)
+    register(user, userType)
       .then(result => {
-        console.log('SUCCESS!')
-        console.log(result)
-        props.history.push(`/${userType.toLowerCase()}/home`)
+        dispatch(setUser(result));
+        console.log('SUCCESS!');
+        console.log(result);
+        props.history.push(`/${userType.toLowerCase()}/home`);
       })
-      .catch(err => { console.log(err); setMessage(err.toString()) })
+      .catch(err => { console.log(err); setMessage(err.toString()) });
   }
 
   const [message, setMessage] = useState(null)
