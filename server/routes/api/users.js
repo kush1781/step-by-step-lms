@@ -17,18 +17,19 @@ router.post("/register", (req, res) => {
     const { errors, isValid } = validateRegisterInput(req.body);
     // Check validation
     if (!isValid) {
-      return res.status(400).json(errors);
+        return res.status(400).json(errors);
     }
     User.findOne({ email: req.body.email }).then(user => {
         if (user) {
             return res.status(400).json({ email: "Email already exists" });
-        } 
+        }
         else {
             const newUser = new User({
                 name: req.body.name,
                 email: req.body.email,
                 password: req.body.password,
-                userType: req.body.userType
+                userType: req.body.userType,
+                courses: []
             });
             // Hash password before saving in database
             bcrypt.genSalt(10, (err, salt) => {
@@ -36,29 +37,29 @@ router.post("/register", (req, res) => {
                     if (err) throw err;
                     newUser.password = hash;
                     newUser
-                    .save()
-                    .then ((user) => {
-                        const payload = {
-                            user: {
-                                id: user._id,
-                                name: user.name,
-                                userType: user.userType
-                            }
-                        };
-                        jwt.sign(
-                            payload, 
-                            keys.secretOrKey, 
-                            { expiresIn: 31556926 },
-                            (err, token) => {
-                                if(err) throw err;
-                                res.json({ 
-                                    user,
-                                    token: "Bearer "+token
-                                });
-                            }    
-                        );
-                    })
-                    .catch(err => console.log(err));
+                        .save()
+                        .then((user) => {
+                            const payload = {
+                                user: {
+                                    id: user._id,
+                                    name: user.name,
+                                    userType: user.userType
+                                }
+                            };
+                            jwt.sign(
+                                payload,
+                                keys.secretOrKey,
+                                { expiresIn: 31556926 },
+                                (err, token) => {
+                                    if (err) throw err;
+                                    res.json({
+                                        user: newUser,
+                                        token: "Bearer " + token
+                                    });
+                                }
+                            );
+                        })
+                        .catch(err => console.log(err));
                 });
             });
         }
@@ -73,7 +74,7 @@ router.post("/login", (req, res) => {
     const { errors, isValid } = validateLoginInput(req.body);
     // Check validation
     if (!isValid) {
-      return res.status(400).json(errors);
+        return res.status(400).json(errors);
     }
     const email = req.body.email;
     const password = req.body.password;

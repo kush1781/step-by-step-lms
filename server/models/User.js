@@ -18,7 +18,10 @@ const UserSchema = new Schema({
     type: String,
     required: true,
     enum: ["student", "teacher"]
-  }
+  },
+  courses: [{
+    name: String
+  }]
 });
 
 module.exports = User = mongoose.model("users", UserSchema);

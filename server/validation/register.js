@@ -8,7 +8,7 @@ module.exports = function validateRegisterInput(data) {
   data.email = !isEmpty(data.email) ? data.email : "";
   data.password = !isEmpty(data.password) ? data.password : "";
   data.password2 = !isEmpty(data.password2) ? data.password2 : "";
-  data.role = !isEmpty(data.role) ? data.role : "";
+  data.userType = !isEmpty(data.userType) ? data.userType : "";
   // Name checks
   if (Validator.isEmpty(data.name)) {
     errors.name = "Name field is required";
@@ -16,7 +16,7 @@ module.exports = function validateRegisterInput(data) {
   // Email checks
   if (Validator.isEmpty(data.email)) {
     errors.email = "Email field is required";
-  } 
+  }
   else if (!Validator.isEmail(data.email)) {
     errors.email = "Email is invalid";
   }
@@ -33,8 +33,8 @@ module.exports = function validateRegisterInput(data) {
   if (!Validator.equals(data.password, data.password2)) {
     errors.password2 = "Passwords must match";
   }
-  if(!(Validator.equals(data.role, "student") || Validator.equals(data.role, "parent") || Validator.equals(data.role, "teacher"))) {
-    errors.role = "Role can only be as student, teacher or parent";
+  if (!(Validator.equals(data.userType, "student") || Validator.equals(data.userType, "parent") || Validator.equals(data.userType, "teacher"))) {
+    errors.userType = "userType can only be as student, teacher or parent";
   }
 
   return {

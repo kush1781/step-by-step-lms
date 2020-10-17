@@ -11,6 +11,7 @@ import SignUp from './pages/SignUp';
 import TeacherHome from './pages/TeacherHome';
 import CourseTeacher from './pages/CourseTeacher'
 import ParentHome from './pages/ParentHome';
+import TestHome from './test/TestHome'
 
 const rootReducer = combineReducers({
   user: userReducer
@@ -29,6 +30,7 @@ export default function App() {
         <PrivateRouter path="/teacher/course/:id" component={CourseTeacher} exact={true} />
         <PrivateRouter path="/parent/home" component={ParentHome} exact={true} />
         <PrivateRouter path="/parent/course/:id" component={Course} exact={true} />
+        <PrivateRouter path="/student/test" component={TestHome} exact={true} />
         <Route render={() => <h2>404</h2>} />
       </Switch>
     </Provider>
