@@ -36,12 +36,12 @@ export default {
   },
 
   // This method signs up and logs in the user
-  signup(userInfo) {
+  signup(user, userType) {
     return service
-      .post('/user/signup', userInfo)
+      .post(`/users/${userType.toLowerCase()}/register`, user)
       .then(res => {
         // If we have localStorage.getItem('user') saved, the application will consider we are loggedin
-        localStorage.setItem('user', JSON.stringify(res.data))
+        // localStorage.setItem('user', JSON.stringify(res.data))
         return res.data
       })
       .catch(errHandler)

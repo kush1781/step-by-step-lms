@@ -33,7 +33,7 @@ export default function SetQuestions(props) {
 
   return (
     <div>
-      <MainNavbar />
+      <MainNavbar history={props.history} />
       <div className="container">
         <h1>Create New Test</h1>
         <Form>
