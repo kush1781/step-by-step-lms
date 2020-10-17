@@ -33,10 +33,14 @@ module.exports = function validateRegisterInput(data) {
   if (!Validator.equals(data.password, data.password2)) {
     errors.password2 = "Passwords must match";
   }
+<<<<<<< HEAD
   if (!(Validator.equals(data.userType, "student") || Validator.equals(data.userType, "parent") || Validator.equals(data.userType, "teacher"))) {
     errors.userType = "userType can only be as student, teacher or parent";
   }
 
+=======
+  
+>>>>>>> 3d0c8b688aa9233526215dd6653fac22f0930a0c
   return {
     errors,
     isValid: isEmpty(errors)

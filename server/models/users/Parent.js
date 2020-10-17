@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 // Create Schema
-const UserSchema = new Schema({
+const StudentSchema = new Schema({
   name: {
     type: String,
     required: true
@@ -14,6 +14,7 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+<<<<<<< HEAD:server/models/User.js
   userType: {
     type: String,
     required: true,
@@ -22,6 +23,16 @@ const UserSchema = new Schema({
   courses: [{
     name: String
   }]
+=======
+  children: {
+    type: [ Schema.Types.ObjectId ],
+    ref: "Student"
+  },
+  posts: {
+    type: [ Schema.Types.ObjectId ],
+    ref: "Post"
+  }
+>>>>>>> 3d0c8b688aa9233526215dd6653fac22f0930a0c:server/models/users/Parent.js
 });
 
-module.exports = User = mongoose.model("users", UserSchema);
+module.exports = mongoose.model("parents", StudentSchema);
