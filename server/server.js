@@ -21,6 +21,19 @@ app.use(
 app.use(bodyParser.json());
 
 app.use(cors());
+// To disable cors() errors
+app.use((req,res,next)=>{
+  res.header("Access-Control-Allow-Origin","*");
+  res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-type, Accept, Authorization"
+      );
+  if(req.method==="OPTIONS"){
+      res.header("Access-Control-Allow-Method", "GET, POST, PUT, DELETE");
+      return  res.status(200).json({});
+  }
+  next();    
+});
 
 // DB Config
 const db = require("./config/keys").mongoURI;
