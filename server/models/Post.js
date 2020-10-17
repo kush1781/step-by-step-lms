@@ -12,20 +12,20 @@ const PostSchema = new Schema({
     type: String,
     required: true
   },
-  creterId: {
+  creatorId: {
     type: Schema.Types.ObjectId,
     required: true
   },
-  createrName: {
+  creatorName: {
     type: String,
     required: true
   },
-  createrType: {
+  creatorType: {
     type: String,
     required: true
   },
   link: String,
-  comments: CommentSchema,
+  comments: [ CommentSchema ],
   date: {
     type: Date,
     default: Date.now
