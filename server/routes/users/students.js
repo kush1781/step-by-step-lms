@@ -42,8 +42,7 @@ router.post("/register", (req, res) => {
                         const payload = {
                             user: {
                                 id: user._id,
-                                name: user.name,
-                                userType: user.userType
+                                name: user.name
                             }
                         };
                         jwt.sign(
@@ -91,8 +90,7 @@ router.post("/login", (req, res) => {
                 // Create JWT Payload
                 const payload = {
                     id: user._id,
-                    name: user.name,
-                    userType: user.userType
+                    name: user.name
                 };
                 // Sign token
                 jwt.sign(
@@ -119,7 +117,7 @@ router.post("/login", (req, res) => {
 // @desc Get list of all teachers
 // @access Private
 router.get("/", checkAuth, async (req, res) => {
-    const users = await User.find();
+    const users = await User.find().select({ password: false });
     if(users) {
         res.json(users);
     }
