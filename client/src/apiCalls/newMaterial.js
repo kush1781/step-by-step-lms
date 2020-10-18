@@ -2,7 +2,7 @@ const HOST = process.env.REACT_APP_HOSTNAME
 
 const newMaterial = async (body) => {
   try {
-    const res = await fetch(`http://${HOST}/api/courses/newmaterial`, {
+    const res = await fetch(`${HOST}/api/courses/newmaterial`, {
       method: "POST",
       body,
       headers: {

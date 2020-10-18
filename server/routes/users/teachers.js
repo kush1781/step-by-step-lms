@@ -19,12 +19,12 @@ router.post("/register", (req, res) => {
     const { errors, isValid } = validateRegisterInput(req.body);
     // Check validation
     if (!isValid) {
-      return res.status(400).json(errors);
+        return res.status(400).json(errors);
     }
     User.findOne({ email: req.body.email }).then(user => {
         if (user) {
             return res.status(400).json({ email: "Email already exists" });
-        } 
+        }
         else {
             const newUser = new User({
                 name: req.body.name,
@@ -37,29 +37,30 @@ router.post("/register", (req, res) => {
                     if (err) throw err;
                     newUser.password = hash;
                     newUser
-                    .save()
-                    .then ((user) => {
-                        const payload = {
-                            user: {
-                                id: user._id,
-                                name: user.name,
-                                userType: user.userType
-                            }
-                        };
-                        jwt.sign(
-                            payload, 
-                            keys.secretOrKey, 
-                            { expiresIn: 31556926 },
-                            (err, token) => {
-                                if(err) throw err;
-                                res.json({ 
-                                    user,
-                                    token: "Bearer "+token
-                                });
-                            }    
-                        );
-                    })
-                    .catch(err => console.log(err));
+                        .save()
+                        .then((user) => {
+                            const payload = {
+                                user: {
+                                    _id: user._id,
+                                    name: user.name
+                                }
+                            };
+                            jwt.sign(
+                                payload,
+                                keys.secretOrKey,
+                                { expiresIn: 31556926 },
+                                (err, token) => {
+                                    if (err) throw err;
+                                    console.log(user);
+                                    res.json({
+                                        user,
+                                        userType: 'Teacher',
+                                        token: "Bearer " + token
+                                    });
+                                }
+                            );
+                        })
+                        .catch(err => console.log(err));
                 });
             });
         }
@@ -74,7 +75,7 @@ router.post("/login", (req, res) => {
     const { errors, isValid } = validateLoginInput(req.body);
     // Check validation
     if (!isValid) {
-      return res.status(400).json(errors);
+        return res.status(400).json(errors);
     }
     const email = req.body.email;
     const password = req.body.password;
@@ -90,9 +91,8 @@ router.post("/login", (req, res) => {
                 // User matched
                 // Create JWT Payload
                 const payload = {
-                    id: user._id,
+                    _id: user._id,
                     name: user.name,
-                    userType: user.userType
                 };
                 // Sign token
                 jwt.sign(
@@ -100,7 +100,10 @@ router.post("/login", (req, res) => {
                     keys.secretOrKey,
                     { expiresIn: 31556926 },
                     (err, token) => {
+                        console.log(user);
                         res.json({
+                            user: payload,
+                            userType: 'Teacher',
                             token: "Bearer " + token
                         });
                     }
@@ -120,7 +123,7 @@ router.post("/login", (req, res) => {
 // @access Private
 router.get("/", checkAuth, async (req, res) => {
     const users = await User.find();
-    if(users) {
+    if (users) {
         res.json(users);
     }
 });

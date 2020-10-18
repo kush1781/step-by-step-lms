@@ -3,7 +3,7 @@ const HOST = process.env.REACT_APP_HOSTNAME;
 const register = async (user, userType) => {
   const body = JSON.stringify(user);
   try {
-    const res = await fetch(`http://${HOST}/api/users/${userType.toLowerCase()}/register`, {
+    const res = await fetch(`${HOST}/api/users/${userType.toLowerCase()}/register`, {
       method: "POST",
       body,
       headers: {

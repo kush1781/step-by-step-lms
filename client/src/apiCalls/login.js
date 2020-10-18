@@ -2,7 +2,7 @@ const HOST = process.env.REACT_APP_HOSTNAME
 
 const login = async (body, userType) => {
   try {
-    const res = await fetch(`http://${HOST}/api/users/${userType.toLowerCase()}/login`, {
+    const res = await fetch(`${HOST}/api/users/${userType.toLowerCase()}/login`, {
       method: "POST",
       body,
       headers: {

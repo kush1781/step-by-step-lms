@@ -24,13 +24,16 @@ export default function TeacherHome(props) {
   }
 
   useMemo(async () => {
+    console.log('user');
+    console.log(user.user._id);
     const body = JSON.stringify({ _id: user.user._id })
+    console.log(body);
     const myCourses = await getCourses(body, user.userType);
     console.log(myCourses);
     setCourses(myCourses);
   }, [])
   dispatch(setMyCourses(courses));
-  if (courses.length > 0) {
+  if (courses) {
     return (
       <div>
         <MainNavbar history={props.history} />

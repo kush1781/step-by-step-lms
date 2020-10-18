@@ -34,7 +34,7 @@ router.post("/addcourse", async (req, res) => {
 router.post('/teacher', async (req, res) => {
   console.log(req.body);
   const user = await User.findById(req.body._id);
-  // console.log(user);
+  console.log(user);
   const promises = user.courses.map(async (course) => {
     const myCourse = await Course.findById(course._id);
     return myCourse;
@@ -45,7 +45,7 @@ router.post('/teacher', async (req, res) => {
 })
 
 router.post('/student', async (req, res) => {
-
+  console.log(req.body);
   const user = await Student.findById(req.body._id);
   console.log(user);
   const courses = await Course.find({ standard: user.standard, section: user.section });

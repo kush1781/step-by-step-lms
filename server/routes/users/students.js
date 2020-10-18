@@ -45,7 +45,7 @@ router.post("/register", (req, res) => {
                         .then((user) => {
                             const payload = {
                                 user: {
-                                    id: user._id,
+                                    _id: user._id,
                                     name: user.name,
                                     userType: user.userType
                                 }
@@ -58,6 +58,7 @@ router.post("/register", (req, res) => {
                                     if (err) throw err;
                                     res.json({
                                         user,
+                                        userType: 'Student',
                                         token: "Bearer " + token
                                     });
                                 }
@@ -105,6 +106,7 @@ router.post("/login", (req, res) => {
                         (err, token) => {
                             res.json({
                                 user,
+                                userType: 'Student',
                                 token: "Bearer " + token
                             });
                         }

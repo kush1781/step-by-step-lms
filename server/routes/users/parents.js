@@ -52,6 +52,7 @@ router.post("/register", (req, res) => {
                                     if (err) throw err;
                                     res.json({
                                         user: newUser,
+                                        userType: 'Parent',
                                         token: "Bearer " + token
                                     });
                                 }
@@ -88,7 +89,7 @@ router.post("/login", (req, res) => {
                 // User matched
                 // Create JWT Payload
                 const payload = {
-                    id: user._id,
+                    _id: user._id,
                     name: user.name,
                     userType: user.userType
                 };
@@ -99,6 +100,8 @@ router.post("/login", (req, res) => {
                     { expiresIn: 31556926 },
                     (err, token) => {
                         res.json({
+                            user: payload,
+                            userType: 'Parent',
                             token: "Bearer " + token
                         });
                     }

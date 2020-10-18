@@ -22,17 +22,17 @@ app.use(bodyParser.json());
 
 app.use(cors());
 // To disable cors() errors
-app.use((req,res,next)=>{
-  res.header("Access-Control-Allow-Origin","*");
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
   res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-type, Accept, Authorization"
-      );
-  if(req.method==="OPTIONS"){
-      res.header("Access-Control-Allow-Method", "GET, POST, PUT, DELETE");
-      return  res.status(200).json({});
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-type, Accept, Authorization"
+  );
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Method", "GET, POST, PUT, DELETE");
+    return res.status(200).json({});
   }
-  next();    
+  next();
 });
 
 // DB Config
@@ -41,7 +41,7 @@ const db = require("./config/keys").mongoURI;
 mongoose
   .connect(
     db,
-    { 
+    {
       useNewUrlParser: true,
       useUnifiedTopology: true
     }
@@ -62,6 +62,6 @@ app.use("/api/courses", coursesRoute);
 app.use("/api/posts", postsRoute);
 app.use("/api/announcements", announcementsRoute);
 app.use("/api/results", resultsRoute);
-  
+
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server up and running on port ${port} !`));
