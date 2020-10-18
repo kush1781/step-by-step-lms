@@ -5,6 +5,7 @@
   "scripts": {
     "start-server": "cd server && npm start",
     "start-app": "cd client && npm start",
+    "heroku-prebuild": "cd client && npm i && cd server && npm i",
     "heroku-postbuild": "cd client && npm run build"
   },
   "engines": {
