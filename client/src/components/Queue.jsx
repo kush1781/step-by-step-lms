@@ -20,7 +20,7 @@ export default function Queue(props) {
       <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
         {
           props.courses.map((course, index) => {
-            console.log(course);
+            {/* console.log(course); */ }
             if (index >= start && index <= end) {
               return <CourseBox key={index} history={props.history} course={course} courseId={course._id} />
             }

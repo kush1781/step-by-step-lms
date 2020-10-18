@@ -2,6 +2,7 @@ const initalState = {
     user: {
         name: 'Manny',
         _id: '5f8b4476b8ead664e017018b'
+        // 5f8b4240a1aca73f24672691
     },
     userType: 'Student'
 }
