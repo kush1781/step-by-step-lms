@@ -1,12 +1,26 @@
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Dropdown from 'react-bootstrap/Dropdown'
+import Dropdown from 'react-bootstrap/Dropdown';
 
 export default function AddCourse(props) {
   const [name, setName] = useState('');
   const [standard, setStandard] = useState('Standard');
   const [section, setSection] = useState('Section');
+  console.log(props.user);
+  const handleAddCourse = async () => {
+    const body = JSON.stringify({
+      name,
+      standard,
+      section,
+      teacher: {
+        _id: props.user._id,
+        name: props.user.name
+      }
+    });
+    props.handleAddCourse(body);
+  }
+
   return (
     <Form className="container" style={{ marginBottom: '1%' }}>
       <Form.Group>
@@ -46,7 +60,7 @@ export default function AddCourse(props) {
           </Dropdown.Menu>
         </Dropdown>
       </div>
-      <Button style={{ marginTop: '1%' }} variant="dark" type="submit">Add</Button>
+      <Button onClick={handleAddCourse} style={{ marginTop: '1%' }} variant="dark">Add</Button>
     </Form>
   )
 }

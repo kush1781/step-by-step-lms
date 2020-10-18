@@ -6,8 +6,7 @@ const service = axios.create({
   baseURL:
     process.env.NODE_ENV === 'production'
       ? '/api'
-      : `http://${window.location.hostname}:5000/api`,
-
+      : `http://localhost:5000/api`,
   withCredentials: true,
 })
 
@@ -37,6 +36,8 @@ export default {
 
   // This method signs up and logs in the user
   signup(user, userType) {
+    console.log(user)
+    console.log(`/users/${userType.toLowerCase()}/register`)
     return service
       .post(`/users/${userType.toLowerCase()}/register`, user)
       .then(res => {

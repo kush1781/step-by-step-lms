@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux'
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import MainNavbar from '../MainNavbar';
 import Post from '../Post';
 import Form from 'react-bootstrap/Form';
@@ -8,60 +8,73 @@ import { storage } from '../../firebase/firebase';
 import LoadingPage from './LoadingPage';
 import AddMaterial from '../AddMaterial';
 import Modal from 'react-bootstrap/Modal';
+import newMaterial from '../../apiCalls/newMaterial';
+import newPost from '../../apiCalls/newPost';
+import addComment from '../../apiCalls/addComment';
+import { editCourse } from '../../store/actions/courses';
+
+// {
+//   _id: '1',
+//   name: 'Physics',
+//   standard: '10th',
+//   section: 'E',
+//   material: [{
+//     _id: '1',
+//     title: 'Week 1',
+//     body: 'Blah blah Blah blah Blah blah Blah blah Blah blah',
+//     link: 'https://www.google.com/'
+//   }, {
+//     _id: '2',
+//     title: 'Week 2',
+//     body: 'Blah blah Blah blah Blah blah Blah blah Blah blah',
+//     link: 'https://www.google.com/'
+//   }, {
+//     _id: '3',
+//     title: 'Week 3',
+//     body: 'Blah blah Blah blah Blah blah Blah blah Blah blah',
+//     link: 'https://www.google.com/'
+//   }],
+//   tests: [{
+//     _id: '1',
+//     title: 'Minor 1',
+//     body: 'Date: 17th October Time: 5:30PM Duration: 20 minutes'
+//   }, {
+//     _id: '2',
+//     title: 'Minor 2',
+//     body: 'Date: 17th October Time: 5:30PM Duration: 20 minutes'
+//   }, {
+//     _id: '3',
+//     title: 'Mid Sem',
+//     body: 'Date: 27th October Time: 3PM Duration: 3 hours'
+//   }],
+//   posts: []
+// }
 
 export default function Course(props) {
-  const [user, setUser] = useState(useSelector(state => state.user));
+  const [user] = useState(useSelector(state => state.user));
   const [newPostBody, setPost] = useState('');
   const [link, setLink] = useState('');
-  const [course, setCourse] = useState({
-    _id: '1',
-    name: 'Physics',
-    standard: '10th',
-    section: 'E',
-    material: [{
-      _id: '1',
-      title: 'Week 1',
-      body: 'Blah blah Blah blah Blah blah Blah blah Blah blah',
-      link: 'https://www.google.com/'
-    }, {
-      _id: '2',
-      title: 'Week 2',
-      body: 'Blah blah Blah blah Blah blah Blah blah Blah blah',
-      link: 'https://www.google.com/'
-    }, {
-      _id: '3',
-      title: 'Week 3',
-      body: 'Blah blah Blah blah Blah blah Blah blah Blah blah',
-      link: 'https://www.google.com/'
-    }],
-    tests: [{
-      _id: '1',
-      title: 'Minor 1',
-      body: 'Date: 17th October Time: 5:30PM Duration: 20 minutes'
-    }, {
-      _id: '2',
-      title: 'Minor 2',
-      body: 'Date: 17th October Time: 5:30PM Duration: 20 minutes'
-    }, {
-      _id: '3',
-      title: 'Mid Sem',
-      body: 'Date: 27th October Time: 3PM Duration: 3 hours'
-    }],
-    posts: []
-  })
   const [materialModalVisible, setMaterialModalVisible] = useState(false);
+  const [course, setCourse] = useState(useSelector(state => state.courses.filter((c) => { return c._id == props.match.params.id })[0]));
+  const dispatch = useDispatch();
 
-  const handleAddMaterial = (title, body, link) => {
-    const material = course.material;
-    material.push({ _id: '4', title, body, link });
-    setCourse({ ...course, material })
+  const handleAddMaterial = async (title, body, link) => {
+    const requestBody = JSON.stringify({ _id: course._id, material: { title, body, link } });
+    const getMaterial = await newMaterial(requestBody);
+    console.log(getMaterial);
+    const updateCourse = course;
+    updateCourse.material = getMaterial.material;
+    console.log('course teacher');
+    console.log(updateCourse);
+    setCourse(updateCourse);
+    dispatch(editCourse(updateCourse));
     setMaterialModalVisible(false);
   }
 
   if (course) {
     return (
       <div>
-        <MainNavbar />
+        <MainNavbar history={props.history} />
         <div className='container'>
           <h1>{`${course.name}_${course.standard}_${course.section}`}</h1>
           <div className="material-box">
@@ -111,26 +124,29 @@ export default function Course(props) {
           </div>
           <h2>Discussion Forum</h2>
           <div className="container">
-            <div className="Queue-box" style={{ marginBottom: '1%' }}>
+            <div className="Queue-box" style={{ marginTop: '1%', marginBottom: '1%' }}>
               <h2>New Post</h2>
-              <Form className="container" style={{ marginBottom: '1%' }} onSubmit={((e) => {
+              <Form className="container" style={{ marginBottom: '1%' }} onSubmit={(async (e) => {
                 e.preventDefault();
                 //send update to backend
-                const newPost = {
-                  _id: '3',
-                  author: user.name,
-                  date: '18/10/2020',
-                  body: newPostBody,
-                  comments: [],
-                  link
-                }
+                const body = JSON.stringify({
+                  _id: course._id,
+                  post: {
+                    author: user.user.name,
+                    date: Date.now,
+                    body: newPostBody,
+                    link
+                  }
+                })
+                const getPost = await newPost(body);
                 setPost('');
                 setLink('');
-                console.log(newPost);
+                console.log(getPost);
                 const allPosts = course.posts;
-                allPosts.unshift(newPost)
+                allPosts.unshift(getPost)
                 const updatedCourse = { ...course, posts: allPosts };
                 setCourse(updatedCourse);
+                dispatch(editCourse(updatedCourse));
               })}
               >
                 <Form.Group controlId="formBasicEmail">
@@ -154,22 +170,27 @@ export default function Course(props) {
           </div>
           <div className="container">
             {course.posts.map((post, index) =>
-              <Post key={post._id} post={post} handleAddComment={((comment, commentLink) => {
+              <Post key={post._id} post={post} handleAddComment={(async (comment, commentLink) => {
                 //send update to backend and then to redux
-                const newComment = ({
-                  _id: '5',
-                  author: user.name,
-                  date: '18/10/2020',
-                  body: comment,
-                  link: commentLink
+                const body = JSON.stringify({
+                  courseId: course._id,
+                  postId: post._id,
+                  comment: {
+                    author: user.user.name,
+                    date: Date.now,
+                    body: comment,
+                    link: commentLink
+                  }
                 })
+                const newComment = await addComment(body);
                 const newPost = course.posts[index];
                 newPost.comments.push(newComment);
                 console.log(newPost);
                 const allPosts = course.posts;
                 allPosts[index] = newPost;
-                const updatedCourse = { ...course, posts: allPosts }
-                setCourse(updatedCourse)
+                const updatedCourse = { ...course, posts: allPosts };
+                setCourse(updatedCourse);
+                dispatch(editCourse(updatedCourse));
               })}
               />)}
           </div>

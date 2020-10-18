@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
-import api from '../../api'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-import Dropdown from 'react-bootstrap/Dropdown'
-import LoginNavbar from '../LoginNavbar'
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Dropdown from 'react-bootstrap/Dropdown';
+import LoginNavbar from '../LoginNavbar';
+import register from '../../apiCalls/register';
+import { setUser } from '../../store/actions/user';
 
 export default function SignUp(props) {
   const [name, setName] = useState('');
@@ -14,8 +16,8 @@ export default function SignUp(props) {
   const [standard, setStandard] = useState('Select Standard');
   const [section, setSection] = useState('Select Section');
   const [acceptTerms, setAcceptTerms] = useState(false);
-  function handleSubmit(e) {
-    e.preventDefault();
+  const dispatch = useDispatch();
+  function handleSubmit() {
     const user = {
       name, email, password, password2: confirmPassword
     };
@@ -25,13 +27,14 @@ export default function SignUp(props) {
     if (section != 'Select Section') {
       user.section = section
     }
-    api.signup(user, userType)
+    register(user, userType)
       .then(result => {
-        console.log('SUCCESS!')
-        console.log(result)
-        props.history.push(`/${userType.toLowerCase()}/home`)
+        dispatch(setUser(result));
+        console.log('SUCCESS!');
+        console.log(result);
+        props.history.push(`/${userType.toLowerCase()}/home`);
       })
-      .catch(err => setMessage(err.toString()))
+      .catch(err => { console.log(err); setMessage(err.toString()) });
   }
 
   const [message, setMessage] = useState(null)
@@ -72,7 +75,7 @@ export default function SignUp(props) {
           </Form.Group>
           <Form.Group>
             <Form.Label>Confirm Password</Form.Label>
-            <Form.Control onChange={(e) => { setConfirmPassword(e.targer.value) }} type="password" placeholder="Password" />
+            <Form.Control onChange={(e) => { setConfirmPassword(e.target.value) }} type="password" placeholder="Password" />
           </Form.Group>
           {
             userType == 'Student' ?
@@ -113,10 +116,10 @@ export default function SignUp(props) {
           <Form.Group controlId="formBasicCheckbox" style={{ marginBottom: '1%' }}>
             <Form.Check type="checkbox" label="I agree to all terms and conditions" onChange={(e) => { setAcceptTerms(!acceptTerms) }} />
           </Form.Group>
-          <Button variant="dark" type="submit">
-            SignUp
-          </Button>
         </Form >
+        <Button onClick={handleSubmit} variant="dark" type="submit">
+          SignUp
+        </Button>
         {message && <div className="info info-danger">{message}</div>}
       </div>
     </div>

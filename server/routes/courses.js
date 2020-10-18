@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const keys = require("../config/keys");
 // Load input validation
 const User = require("../models/users/Teacher");
+const Student = require("../models/users/Student");
 const Course = require("../models/Course");
 
 
@@ -32,6 +32,7 @@ router.post("/addcourse", async (req, res) => {
 });
 
 router.post('/teacher', async (req, res) => {
+  console.log(req.body);
   const user = await User.findById(req.body._id);
   // console.log(user);
   const promises = user.courses.map(async (course) => {
@@ -39,6 +40,16 @@ router.post('/teacher', async (req, res) => {
     return myCourse;
   })
   const courses = await Promise.all(promises);
+  console.log(courses);
+  res.send(courses);
+})
+
+router.post('/student', async (req, res) => {
+
+  const user = await Student.findById(req.body._id);
+  console.log(user);
+  const courses = await Course.find({ standard: user.standard, section: user.section });
+  console.log(courses);
   res.send(courses);
 })
 
@@ -49,7 +60,7 @@ router.post('/newmaterial', async (req, res) => {
     course.material.push(newMaterial);
     await course.save();
     console.log(course)
-    res.send({ status: 'ok' });
+    res.send({ material: course.material });
   }
   catch (e) {
     res.send(e);
@@ -63,44 +74,35 @@ router.post('/newpost', async (req, res) => {
       ...req.body.post,
       comments: []
     }
+    console.log(course)
     course.posts.unshift(newPost);
     await course.save();
-    console.log(course)
-    res.send({ status: 'ok' });
+    res.send(course.posts[0]);
   }
   catch (e) {
+    console.log(e);
     res.send(e);
   }
 })
 
 router.post('/newcomment', async (req, res) => {
   try {
-    const course = await Course.findById(req.body.course._id);
-    course.posts.map((post) => {
-      if (post._id == req.body.post._id) {
+    const course = await Course.findById(req.body.courseId);
+    let i;
+    course.posts.map((post, index) => {
+      if (post._id == req.body.postId) {
+        i = index;
         post.comments.push(req.body.comment);
       }
     })
     await course.save()
     console.log(course)
-    res.send({ status: 'ok' });
+    const l = course.posts[i].comments.length;
+    res.send(course.posts[i].comments[l - 1]);
   }
   catch (e) {
     res.status(400).send(e)
   }
 })
-
-//student get courses
-
-// router.post('/student', async (req, res) => {
-//   const user = await User.findById(req.body._id);
-//   // console.log(user);
-//   const promises = user.courses.map(async (course) => {
-//     const myCourse = await Course.findById(course._id);
-//     return myCourse;
-//   })
-//   const courses = await Promise.all(promises);
-//   res.send(courses);
-// })
 
 module.exports = router;
