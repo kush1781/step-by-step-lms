@@ -126,7 +126,7 @@ router.post("/login", (req, res) => {
 // @desc Get list of all teachers
 // @access Private
 router.get("/", checkAuth, async (req, res) => {
-    const users = await User.find();
+    const users = await User.find().select({ password: false });
     if (users) {
         res.json(users);
     }

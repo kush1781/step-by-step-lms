@@ -41,7 +41,7 @@ router.post("/register", (req, res) => {
                         .then((user) => {
                             const payload = {
                                 user: {
-                                    _id: user._id,
+                                    id: user._id,
                                     name: user.name
                                 }
                             };
@@ -51,10 +51,8 @@ router.post("/register", (req, res) => {
                                 { expiresIn: 31556926 },
                                 (err, token) => {
                                     if (err) throw err;
-                                    console.log(user);
                                     res.json({
                                         user,
-                                        userType: 'Teacher',
                                         token: "Bearer " + token
                                     });
                                 }
@@ -92,7 +90,7 @@ router.post("/login", (req, res) => {
                 // Create JWT Payload
                 const payload = {
                     _id: user._id,
-                    name: user.name,
+                    name: user.name
                 };
                 // Sign token
                 jwt.sign(
@@ -116,16 +114,6 @@ router.post("/login", (req, res) => {
             }
         });
     });
-});
-
-// @route GET api/users/teacher
-// @desc Get list of all teachers
-// @access Private
-router.get("/", checkAuth, async (req, res) => {
-    const users = await User.find();
-    if (users) {
-        res.json(users);
-    }
 });
 
 module.exports = router;
