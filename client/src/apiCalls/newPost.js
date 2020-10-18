@@ -1,9 +1,8 @@
-const LOCAL_HOST = '192.168.119.1:5000'
+const HOST = process.env.REACT_APP_HOSTNAME;
+
 const newPost = async (body) => {
-  console.log(body);
-  console.log(LOCAL_HOST)
   try {
-    const res = await fetch(`http://${LOCAL_HOST}/api/courses/newpost`, {
+    const res = await fetch(`http://${HOST}/api/courses/newpost`, {
       method: "POST",
       body,
       headers: {

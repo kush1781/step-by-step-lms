@@ -1,9 +1,9 @@
-const LOCAL_HOST = '192.168.119.1:5000'
+const HOST = process.env.REACT_APP_HOSTNAME;
+
 const register = async (user, userType) => {
-  console.log(LOCAL_HOST)
   const body = JSON.stringify(user);
   try {
-    const res = await fetch(`http://${LOCAL_HOST}/api/users/${userType.toLowerCase()}/register`, {
+    const res = await fetch(`http://${HOST}/api/users/${userType.toLowerCase()}/register`, {
       method: "POST",
       body,
       headers: {
